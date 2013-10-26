@@ -69,6 +69,8 @@ int score = 0;
 bool fire = false;
 
 int level = 1;
+int levelSpeed = 5;
+int levelUp = 100;
 int pumX = 390; //center route
 int pumY = 480; //center route
 
@@ -91,15 +93,21 @@ void draw(){
 	//while(gameover == false){
 		if(pumExist == true){
 			for(int i = 0;i<25 && pumY > 300;i++){
-				frameRate(60);
+				frameRate(levelSpeed);
 				image(pumpk[0],pumX,pumY,60,60);
 			}
 			pumY--;;
 		}else{
 			//text("Blow!",pumX,pumY);
+			if(score > levelUp){
+				levelUp+=100;
+				level++;
+				levelSpeed+=5;
+				frameRate(levelSpeed);
+			}
 			score+=10;
 			pumExist = true;
-			frameRate(10);
+			frameRate(levelSpeed);
 			image(boom,pumX,pumY,100,100);
 			image(boom,pumX,pumY,100,100);
 			image(boom,pumX,pumY,100,100);
@@ -113,16 +121,22 @@ void draw(){
 
 	if(pumExistLeft == true){
 			for(int i = 0;i<15 && pumYL > 300;i++){
-				frameRate(60);
+				frameRate(levelSpeed);
 				image(pumpk[1],pumXL,pumYL,60,60);
 			}
 			pumYL--;
 			pumXL+=2;
 	}else{
 			//text("Blow!",pumX,pumY);
+			if(score > levelUp){
+				levelUp+=100;
+				level++;
+				levelSpeed+=5;
+				frameRate(levelSpeed);
+			}
 			score+=10;
 			pumExistLeft = true;
-			frameRate(10);
+			frameRate(levelSpeed);
 			image(boom,pumXL,pumYL,100,100);
 			//ellipse(170,140,15,20);
 			pumXL = 70;
@@ -134,16 +148,22 @@ void draw(){
 
 	if(pumExistRight == true){
 			for(int i = 0;i<15 && pumYR > 300;i++){
-				frameRate(60);
+				frameRate(levelSpeed);
 				image(pumpk[2],pumXR,pumYR,60,60);
 			}
 			pumYR--;
 			pumXR--;
 		}else{
 			//text("Blow!",pumX,pumY);
+			if(score > levelUp){
+				levelUp+=100;
+				level++;
+				levelSpeed+=5;
+				frameRate(levelSpeed);
+			}
 			score+=10;
 			pumExistRight = true;
-			frameRate(10);
+			frameRate(levelSpeed);
 			image(boom,pumXR,pumYR,100,100);
 			
 			pumXR = 610;
@@ -171,14 +191,17 @@ void draw(){
 	//line(0,315,1000,315); //where pumpkin stops
 	text("Score: " + score + "",700,40);
 	text("Health: " + health + "",700,60);
+	text("Level: " + level + "",700,80);
+	text("Speed: " + levelSpeed + "",700,100);
+
+	//for testing the center Pumpkin coordinates
 	//text("pumX: " + pumX + "",700,80);
 	//text("pumY: " + pumY + "",700,100);
 
 	if(health <= 0){
 		tint(100);
 		textSize(44);
-		//fill(255,255,0,0);
-		text("GAME OVER!!!\nHAPPY HALLOWEEN!!!\nYour score: "+score+"",200,200);
+		text("GAME OVER!!!\nHAPPY HALLOWEEN!!!\nYour score: "+score+"\nLevel: "+level+"",200,200);
 	}
 }
 
@@ -188,55 +211,19 @@ void mousePressed(){
 		line(0,0,100,100);
 	}else{
 		frameRate(10);
-		stroke(255,0,0);
-		strokeWeight(6);
-		//line(380,90,120,450);
+		stroke(255,0,0); //the color of line()
+		strokeWeight(6); //the thickness of line()
 		line(380,90,mouseX,mouseY);
-		//fill(255,0,0);
 		line(435,90,mouseX,mouseY);
 
-		/*if((mouseX >= pumX - 10 && mouseX <= pumX + 10) && (mouseY >= pumY - 10 && mouseY <= pumY + 10)){
-			ellipse(170,140,15,20);
-		}
-		if((mouseX - pumX + 30 < 30) && (mouseY - pumY + 30 < 30) ){
-			ellipse(170,140,15,20);
-		}*/
 		if(dist(mouseX, mouseY, pumX + 30, pumY + 30) < 30){
-			//ellipse(170,140,15,20);
 			pumExist = false;
 		}
-
 		if(dist(mouseX, mouseY, pumXL + 30, pumYL + 30) < 30){
 			pumExistLeft = false;
 		}
-
 		if(dist(mouseX, mouseY, pumXR + 30, pumYR + 30) < 30){
 			pumExistRight = false;
 		}
 	}
 }
-
-/*for(int i=pews.size()-1;i>=0;i--){ 
-		pew p = (pew) pews.get(i);
-		p.move();
-		if(!p.alive)
-			pews.remove(i);
-		else
-			p.draw();
-	}
-		
-	if(beam){
-		if(highdetail)
-			stroke(random(100,255),random(100,255),random(100,255));
-		else
-			stroke(0,255,0);
-
-    	if (gamepad) {
-        	bx = 10;
-        	by = 10;
-    	} else {
-        	bx=mouseX;
-        	by=mouseY;
-    	}
-  	}
-  	*/
